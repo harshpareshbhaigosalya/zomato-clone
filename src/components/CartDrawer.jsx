@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const CartDrawer = ({ cartItems, setCartItems }) => {
+const CartDrawer = ({ cartItems = [], setCartItems }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const removeItem = (index) => {
