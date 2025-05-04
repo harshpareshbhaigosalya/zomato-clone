@@ -2,7 +2,8 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // ✅ Directly paste your API key if skipping .env for now
 // ✅ Correct for Vite
-const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY;
+// const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY;
+const geminiApiKey = "AIzaSyA6KnKBbP7h9coZznB40BlECDuNFSxfvz4";
 
 
 const genAI = new GoogleGenerativeAI(geminiApiKey);
