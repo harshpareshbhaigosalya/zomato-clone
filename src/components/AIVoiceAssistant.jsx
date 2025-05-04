@@ -76,26 +76,25 @@ const SimpleVoiceAssistant = ({ onAddToCart, menu }) => {
   };
 
   return (
-    <div className="text-center p-4 bg-white rounded-lg shadow-md">
-      <h3 className="text-xl font-bold mb-4">Voice Ordering</h3>
+    <div className="text-center p-4 bg-transparent rounded-lg shadow-md">
       <button
         onClick={startListening}
         disabled={isListening}
         className={`px-6 py-2 rounded-full ${
-          isListening ? "bg-gray-400" : "bg-red-600 hover:bg-red-700"
+          isListening ? "bg-gray-400" : "bg-yellow-600 hover:bg-yellow-700"
         } text-white transition`}
       >
         {isListening ? "Listening..." : "Start Voice Input"}
       </button>
 
       {transcript && (
-        <p className="mt-4 text-gray-700">
+        <p className="mt-4 text-yellow-700">
           You said: <strong>{transcript}</strong>
         </p>
       )}
 
       {response && response !== "Ready to listen..." && (
-        <p className="mt-2 text-blue-600">{response}</p>
+        <p className="mt-2 text-yellow-600">{response}</p>
       )}
     </div>
   );

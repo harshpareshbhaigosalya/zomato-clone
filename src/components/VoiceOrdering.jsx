@@ -40,8 +40,7 @@ const VoiceOrdering = ({ onAddToCart }) => {
   };
 
   return (
-    <div className="text-center p-4 bg-white rounded-lg shadow-md">
-      <h3 className="text-xl font-bold mb-4">Voice Ordering</h3>
+    <div className="text-center p-4 bg-transparent rounded-lg shadow-md">
       <button
         onClick={startListening}
         disabled={isListening}

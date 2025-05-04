@@ -7,7 +7,7 @@ const Header = () => {
     <header className="bg-gray-800 bg-opacity-70 shadow-lg fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         {/* Logo */}
-        <h1 className="text-3xl font-bold text-white cursor-pointer hover:text-red-600 transition duration-300">
+        <h1 className="text-3xl font-bold text-red-700 cursor-pointer hover:text-red-600 transition duration-300">
           Zomato
         </h1>
 

@@ -42,7 +42,7 @@ const RestaurantPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white font-sans">
       <Header />
-
+        <br/>
       {/* Floating Cart Drawer */}
       <CartDrawer cartItems={cartItems} setCartItems={setCartItems} />
 
@@ -62,7 +62,7 @@ const RestaurantPage = () => {
           <p className="text-lg text-yellow-100 mb-4">
             Experience the{" "}
             <span className="font-bold text-yellow-300">Finest Flavours</span>{" "}
-            from Our Kitchen!
+            from Kitchen of India!
           </p>
         </section>
 
