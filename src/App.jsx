@@ -10,7 +10,7 @@ const App = () => {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/restaurant" element={<RestaurantPage />} />
-      <Route path="/recommender" element={<RecommenderPage />} />
+      <Route path="/recommender" element={<RecommenderPage />} /> 
       <Route path="/profile/:hashId?" element={<ProfilePage />} />
     </Routes>
   );
