@@ -42,7 +42,7 @@ const RecommenderPage = () => {
       setAiPlan(response);
       // Scroll to related recipes
       setTimeout(
-        () => relatedRecipesRef.current?.scrollIntoView({ behavior: "smooth" }),
+        () => relatedRecipesRef.current && relatedRecipesRef.current.scrollIntoView({ behavior: "smooth" }),
         300
       );
     } catch {
@@ -55,8 +55,37 @@ const RecommenderPage = () => {
   };
 
   // Filter related recipes based on AI recommended dishes
-  const relatedRecipes = aiPlan?.recommendedDishes
-    ? mockMenu.filter((d) => aiPlan.recommendedDishes.includes(d.name))
+  // Use a flattened array of all meal items from the mealPlan
+  const getMealItemsFromPlan = (plan) => {
+    if (!plan?.mealPlan) return [];
+    
+    const allItems = [];
+    
+    // Go through each day
+    Object.values(plan.mealPlan).forEach(day => {
+      // For each meal type (breakfast, lunch, etc.)
+      Object.values(day).forEach(mealItems => {
+        // Add all items from this meal to our list
+        if (Array.isArray(mealItems)) {
+          allItems.push(...mealItems);
+        }
+      });
+    });
+    
+    return allItems;
+  };
+
+  // Get all meal items to match against recipes
+  const allMealItems = aiPlan ? getMealItemsFromPlan(aiPlan) : [];
+  
+  // Find related recipes based on meal item names (simplistic matching)
+  const relatedRecipes = allMealItems.length > 0
+    ? mockMenu.filter(d => 
+        allMealItems.some(item => 
+          d.name.toLowerCase().includes(item.toLowerCase()) ||
+          item.toLowerCase().includes(d.name.toLowerCase())
+        )
+      )
     : [];
 
   return (
@@ -125,9 +154,97 @@ const RecommenderPage = () => {
 
             {aiPlan?.plan && (
               <>
+                {/* Overview */}
                 <div className="bg-gray-900 rounded-xl p-6 mt-8 shadow-inner text-yellow-200 max-w-3xl mx-auto whitespace-pre-line leading-relaxed text-left text-lg">
-                  {aiPlan.plan}
+                  <h2 className="text-2xl font-bold text-amber-400 mb-4">Diet Plan Overview</h2>
+                  <p>{aiPlan.plan}</p>
                 </div>
+
+                {/* Meal Plan */}
+                {aiPlan.mealPlan && (
+                  <div className="bg-gray-900 rounded-xl p-6 mt-8 shadow-inner text-gray-100 max-w-3xl mx-auto">
+                    <h2 className="text-2xl font-bold text-amber-400 mb-4">Your Meal Plan</h2>
+                    
+                    {Object.entries(aiPlan.mealPlan).map(([day, meals], index) => (
+                      <div key={day} className={`mb-6 pb-6 ${index !== Object.keys(aiPlan.mealPlan).length - 1 ? 'border-b border-gray-700' : ''}`}>
+                        <h3 className="text-xl font-semibold text-amber-300 mb-3">{day}</h3>
+                        
+                        <div className="space-y-4">
+                          {meals.breakfast && (
+                            <div>
+                              <h4 className="text-md font-medium text-amber-200">Breakfast</h4>
+                              <ul className="list-disc list-inside pl-2 text-gray-300">
+                                {meals.breakfast.map((item, i) => (
+                                  <li key={i}>{item}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                          
+                          {meals.midMorningSnack && (
+                            <div>
+                              <h4 className="text-md font-medium text-amber-200">Mid-Morning Snack</h4>
+                              <ul className="list-disc list-inside pl-2 text-gray-300">
+                                {meals.midMorningSnack.map((item, i) => (
+                                  <li key={i}>{item}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                          
+                          {meals.lunch && (
+                            <div>
+                              <h4 className="text-md font-medium text-amber-200">Lunch</h4>
+                              <ul className="list-disc list-inside pl-2 text-gray-300">
+                                {meals.lunch.map((item, i) => (
+                                  <li key={i}>{item}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                          
+                          {meals.eveningSnack && (
+                            <div>
+                              <h4 className="text-md font-medium text-amber-200">Evening Snack</h4>
+                              <ul className="list-disc list-inside pl-2 text-gray-300">
+                                {meals.eveningSnack.map((item, i) => (
+                                  <li key={i}>{item}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                          
+                          {meals.dinner && (
+                            <div>
+                              <h4 className="text-md font-medium text-amber-200">Dinner</h4>
+                              <ul className="list-disc list-inside pl-2 text-gray-300">
+                                {meals.dinner.map((item, i) => (
+                                  <li key={i}>{item}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Tips Section */}
+                {aiPlan.summary && (
+                  <div className="bg-gray-900 rounded-xl p-6 mt-8 shadow-inner text-gray-100 max-w-3xl mx-auto">
+                    <h2 className="text-2xl font-bold text-amber-400 mb-4">Tips for Success</h2>
+                    <ul className="list-disc list-inside pl-2 text-gray-300 space-y-2">
+                      {Array.isArray(aiPlan.summary) ? (
+                        aiPlan.summary.map((tip, index) => (
+                          <li key={index}>{tip}</li>
+                        ))
+                      ) : (
+                        <li>{aiPlan.summary}</li>
+                      )}
+                    </ul>
+                  </div>
+                )}
 
                 <h2
                   ref={relatedRecipesRef}
